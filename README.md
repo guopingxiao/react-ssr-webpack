@@ -1,6 +1,6 @@
 # react-ssr-webpack
 
-+ 学习如何使用react做服务端渲染，是慕课网[React 服务器渲染原理解析与实践](https://coding.imooc.com/class/276.html)课程的学习记录
++ 学习如何使用react做服务端渲染，简单的原理了解：
 + 技术栈
 	+ react
 	+ react-router-dom
