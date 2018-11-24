@@ -1,0 +1,51 @@
+{
+  "name": "react-ssr-webpack-two",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "npm-run-all --parallel dev:**",
+    "dev:webpack": "./node_modules/.bin/webpack --config webpack.server.js --watch",
+    "dev:build:server": "nodemon ./build/bundle.js",
+    "dev:build:client": "./node_modules/.bin/webpack --config webpack.client.js --watch",
+    "lint": "eslint --ext .js src",
+    "lint:fix": "eslint --fix --ext .js src",
+    "dev:server": "node ./server/app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "chalk": "^2.4.1",
+    "express": "^4.16.4",
+    "express-http-proxy": "^1.5.0",
+    "react": "^16.6.1",
+    "react-dom": "^16.6.1",
+    "react-helmet": "^5.2.0",
+    "react-redux": "^5.1.1",
+    "react-router-config": "^4.4.0-beta.6",
+    "react-router-dom": "^4.3.1",
+    "redux": "^4.0.1",
+    "redux-thunk": "^2.3.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.1.5",
+    "babel-core": "^6.26.3",
+    "babel-eslint": "^10.0.1",
+    "babel-loader": "^7.1.5",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "css-loader": "^1.0.1",
+    "eslint": "^5.9.0",
+    "eslint-plugin-react": "^7.11.1",
+    "isomorphic-style-loader": "^4.0.0",
+    "redux-devtools-extension": "^2.13.5",
+    "style-loader": "^0.23.1",
+    "webpack": "^4.25.1",
+    "webpack-cli": "^3.1.2",
+    "webpack-merge": "^4.1.4",
+    "webpack-node-externals": "^1.7.2"
+  }
+}
