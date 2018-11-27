@@ -88,6 +88,7 @@ global.Promise.all(promises).then(() => {
 ```
 
 + 在render方法里追加相应的参数
+
 + 数据的注水和脱水
 在服务器端已经获取到了`store`里的值，然后把所有的`state`的值注水到要渲染的页面里
 
