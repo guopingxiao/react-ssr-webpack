@@ -1,4 +1,5 @@
 # 1. 使用CSS样式
+
 + 使用CSS样式，需要在客户端和服务器端共同加入CSS样式，所以我们需要在webpack中添加使用`css-loader`和`style-loader`
 + 然而，问题就在于，客户端使用`css-loader`和`style-loader`没有任何问题，因为客户端有window对象，样式可以挂载在window对象上。
 + 但是服务器端没有window对象，所以，在服务器端使用`style-loader`是会报错的，所以，我们使用一个可以在服务器端使用的css的loader，叫做`isomorphic-style-loader`
@@ -84,7 +85,7 @@ module.exports = {
 ```
 
 ### 1.1 客户端使用css样式
-+ 直接引入css文件，在需要样式的dom元素上加上相应的类名
++ isomorphic-style-loader直接引入css文件，在需要样式的dom元素上加上相应的类名，怎么取到其css的内容呢？;style-loader是会将class加载在html中，并将其内容挂载在header上；
 
 ```javascript
 // home.js
@@ -95,12 +96,12 @@ import styles from './index.css';
 
 ### 1.2 服务器端使用css样式
 + 需要把组件里的css样式，通过生命周期钩子函数挂载到`staticContext`中
-+ 服务器端拿到这个`staticContext`之后，可以注入到`html`中
++ 服务器端render函数拿到这个`staticContext`之后，可以注入到`html`中`head`里
 
 ```javascript
 // home.js
 componentWillMount () {
-  if (this.props.staticContext) {
+  if (this.props.staticContext) { // 区别客户端渲染，通过_getCss()方法拿到css样式；
     this.props.staticContext.css = styles._getCss();
   }
 }
@@ -122,7 +123,7 @@ const html = `
 
 ### 1.3 多组件使用css样式
 + 如果像1.2里一样，在home组件里把样式挂载到`staticContext.css`中
-+ 假如在`header`组件中，也这么做，那么就会出现这种情况
++ 假如在`header`组件中，也这么做，那么就会出现这种情况， staticContext 只能传递给路由的组件上，我们可以将context传进去
 
 ```javascript
 // header.js
@@ -166,7 +167,7 @@ componentWillMount () {
   }
 }
 ```
-+ 然后再到服务端，把css数组进行解析，注入到html中
++ 然后再到服务端，把css数组进行解析，换行后注入到html中
 
 ```javascript
 // server/utils.js
@@ -187,6 +188,14 @@ const App = (props) => {
 ```
 
 ### 1.4 使用高阶组件把需要的公共的样式方法提取出来
+如何避免在每个中间中都去写这一段代码呢？
+```javascript
+componentWillMount () {
+  if (this.props.staticContext) {
+    this.props.staticContext.css.push(styles._getCss());
+  }
+}
+```
 + 由于每一个需要样式的组件里，都需要把css样式`push`进css数组中，所以我们可以使用一个高阶组件，把需要的公共样式提取出来
 ```javascript
 // home.js
@@ -202,7 +211,7 @@ componentWillMount () {
 import React, { Component } from 'react';
 
 // 生成高阶组件的函数
-// 返回的组件叫高阶组件
+// 入参是一个组件，返回的也是一个组件，返回的组件叫高阶组件
 export default (DecoratedComponent, styles) => {
   return class NewComponent extends Component {
     componentWillMount () {
